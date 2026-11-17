@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Get Artho — the English–Assamese dictionary. Install from the PhonePe Appstore, open the main website, or get it on JioStore for JioPhone." />
+    <link rel="icon" href="data:," />
+    <title>Artho — Get the Assamese Dictionary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700;6..72,800&family=Noto+Serif+Bengali:wght,500;700;900&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f6f8f6;
+        --surface: #ffffff;
+        --surface-2: #eef3ee;
+        --ink: #13211a;
+        --muted: #4c5d54;
+        --line: #dce4dc;
+        --brand: #0b5138;
+        --brand-deep: #07382a;
+        --brand-soft: #e3efe7;
+        --gold: #c07f02;
+        --gold-bright: #e9a820;
+        --gold-ink: #231600;
+        --red: #b23a2e;
+        --hero-ink: #f4f8f2;
+        --hero-muted: #bcd2c2;
+        --shadow: 0 18px 40px rgba(10, 45, 32, 0.14);
+        --radius: 18px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0a1511;
+          --surface: #122019;
+          --surface-2: #182920;
+          --ink: #edf3ee;
+          --muted: #a7b8ae;
+          --line: #26382d;
+          --brand: #35a26e;
+          --brand-deep: #052e21;
+          --brand-soft: #173528;
+          --gold: #e8b33d;
+          --gold-bright: #f0bc45;
+          --gold-ink: #231600;
+          --red: #e0705f;
+          --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      .as { font-family: "Noto Serif Bengali", "Public Sans", serif; }
+      a { color: inherit; }
+      :focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; border-radius: 6px; }
+
+      /* ---------- Gamusa stripe motif ---------- */
+      .stripe {
+        height: 8px;
+        background:
+          repeating-linear-gradient(90deg, var(--red) 0 26px, transparent 26px 34px, var(--gold-bright) 34px 40px, transparent 40px 48px);
+        opacity: 0.9;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        background: var(--brand-deep);
+        color: var(--hero-ink);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::after {
+        content: "অ";
+        position: absolute;
+        right: -0.18em;
+        top: -0.32em;
+        font-family: "Noto Serif Bengali", serif;
+        font-weight: 900;
+        font-size: clamp(16rem, 42vw, 30rem);
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.05);
+        pointer-events: none;
+      }
+      .hero-inner {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 3.2rem 1.25rem 3.6rem;
+        display: grid;
+        gap: 2.6rem;
+        position: relative;
+        z-index: 1;
+      }
+      @media (min-width: 900px) {
+        .hero-inner { grid-template-columns: 1.15fr 0.85fr; align-items: center; padding-top: 4.2rem; padding-bottom: 4.6rem; }
+      }
+      .hero-word {
+        font-family: "Noto Serif Bengali", serif;
+        font-weight: 900;
+        font-size: clamp(4.2rem, 13vw, 7.5rem);
+        line-height: 1.05;
+        margin: 0;
+        color: #fff;
+      }
+      .hero-word .dot { color: var(--gold-bright); }
+      .hero-name {
+        font-family: "Newsreader", Georgia, serif;
+        font-weight: 800;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--gold-bright);
+        margin: 0.4rem 0 0;
+      }
+      .hero-tag {
+        font-family: "Newsreader", Georgia, serif;
+        font-weight: 700;
+        font-size: clamp(1.7rem, 5.4vw, 2.7rem);
+        line-height: 1.15;
+        margin: 1.1rem 0 0.8rem;
+        max-width: 16ch;
+      }
+      .hero-sub { color: var(--hero-muted); font-size: 1.05rem; max-width: 46ch; margin: 0; }
+      .hero-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+      .chip {
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        color: var(--hero-ink);
+        border-radius: 999px;
+        padding: 0.38rem 0.85rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+      .chip strong { color: var(--gold-bright); font-weight: 800; }
+      .hero-cta { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.6rem; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        min-height: 52px;
+        padding: 0.8rem 1.35rem;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        border: 1.5px solid transparent;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      }
+      .btn:active { transform: translateY(1px); }
+      .btn-gold { background: var(--gold-bright); color: var(--gold-ink); box-shadow: 0 10px 24px rgba(233, 168, 32, 0.3); }
+      .btn-gold:hover { background: #f3ba3e; }
+      .btn-ghost { border-color: rgba(255, 255, 255, 0.4); color: var(--hero-ink); background: rgba(255, 255, 255, 0.06); }
+      .btn-ghost:hover { background: rgba(255, 255, 255, 0.13); }
+      .btn-green { background: var(--brand); color: #fff; }
+      @media (prefers-color-scheme: dark) { .btn-green { color: #06130d; } }
+      .btn-green:hover { filter: brightness(1.08); }
+      .btn-line { border-color: var(--line); background: var(--surface); color: var(--ink); }
+      .btn-line:hover { border-color: var(--brand); }
+      .btn svg { flex: none; }
+
+      /* ---------- Phone mock ---------- */
+      .phone-wrap { display: flex; justify-content: center; }
+      .phone {
+        width: min(300px, 82vw);
+        background: #101613;
+        border-radius: 40px;
+        padding: 12px;
+        box-shadow: var(--shadow);
+        transform: rotate(2deg);
+      }
+      .phone-screen {
+        background: #fbfcf9;
+        color: #16241c;
+        border-radius: 30px;
+        overflow: hidden;
+      }
+      .phone-head {
+        background: var(--brand-deep);
+        color: #fff;
+        padding: 1rem 1.1rem 0.9rem;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+      .phone-head .as { font-size: 1.5rem; font-weight: 900; }
+      .phone-head span { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-bright); font-weight: 700; }
+      .phone-body { padding: 1rem 1.1rem 1.2rem; }
+      .mock-search {
+        display: flex; align-items: center; gap: 0.5rem;
+        border: 1.5px solid #d8e2d8; border-radius: 999px;
+        padding: 0.55rem 0.9rem; font-size: 0.92rem; color: #33463a;
+        background: #fff;
+      }
+      .mock-entry { margin-top: 0.9rem; border: 1px solid #e2e9e2; border-radius: 14px; padding: 0.85rem 0.95rem; background: #fff; }
+      .mock-entry .w { display: flex; justify-content: space-between; align-items: baseline; }
+      .mock-entry .word { font-weight: 800; font-size: 1.05rem; }
+      .mock-entry .star { color: var(--gold-bright); font-size: 1.05rem; }
+      .mock-entry .pos { font-size: 0.72rem; color: #71816f; font-style: italic; }
+      .mock-entry .mean { font-family: "Noto Serif Bengali", serif; font-size: 1.3rem; font-weight: 700; margin-top: 0.25rem; }
+      .mock-entry .rom { font-size: 0.8rem; color: #71816f; }
+      .mock-row { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+      .mock-pill {
+        flex: 1; text-align: center; font-size: 0.74rem; font-weight: 700;
+        border-radius: 10px; padding: 0.5rem 0.3rem;
+        background: #eef4ee; color: #0b5138;
+      }
+      .mock-pill.gold { background: #fdf0d3; color: #7a5200; }
+
+      /* ---------- Sections ---------- */
+      .section { max-width: 1120px; margin: 0 auto; padding: 3.2rem 1.25rem 0.6rem; }
+      .section h2 {
+        font-family: "Newsreader", Georgia, serif;
+        font-weight: 800;
+        font-size: clamp(1.65rem, 5vw, 2.3rem);
+        line-height: 1.15;
+        margin: 0 0 0.5rem;
+      }
+      .section .lede { color: var(--muted); max-width: 62ch; margin: 0 0 1.8rem; }
+
+      /* ---------- Picker ---------- */
+      .picker { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.4rem; }
+      .picker button {
+        min-height: 48px;
+        padding: 0.65rem 1.15rem;
+        border-radius: 999px;
+        border: 1.5px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+      .picker button[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+      @media (prefers-color-scheme: dark) { .picker button[aria-pressed="true"] { color: #06130d; } }
+
+      /* ---------- Download cards ---------- */
+      .dl-grid { display: grid; gap: 1.1rem; }
+      @media (min-width: 860px) { .dl-grid { grid-template-columns: 1fr 1fr; } .dl-card.featured { grid-column: 1 / -1; } }
+      .dl-card {
+        background: var(--surface);
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+      .dl-card.highlight { border-color: var(--gold-bright); box-shadow: 0 0 0 3px rgba(233, 168, 32, 0.25), var(--shadow); }
+      .dl-card.featured { background: var(--brand-deep); color: var(--hero-ink); border-color: var(--brand-deep); }
+      .dl-top { display: flex; align-items: center; gap: 0.9rem; }
+      .dl-badge {
+        width: 52px; height: 52px; flex: none;
+        border-radius: 14px;
+        display: grid; place-items: center;
+        background: var(--brand-soft);
+        color: var(--brand);
+      }
+      .featured .dl-badge { background: rgba(233, 168, 32, 0.16); color: var(--gold-bright); }
+      .dl-card h3 { margin: 0; font-size: 1.18rem; line-height: 1.25; }
+      .dl-card .for { margin: 0.15rem 0 0; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+      .featured .for { color: var(--gold-bright); }
+      .dl-card p { margin: 0; color: var(--muted); }
+      .featured p { color: var(--hero-muted); }
+      .dl-steps { margin: 0.2rem 0 0; padding-left: 1.25rem; color: var(--muted); font-size: 0.95rem; }
+      .featured .dl-steps { color: var(--hero-muted); }
+      .dl-steps li { margin: 0.2rem 0; }
+      .dl-steps strong, .dl-card p strong { color: var(--ink); }
+      .featured .dl-steps strong, .featured p strong { color: #fff; }
+      .dl-card .btn { margin-top: auto; align-self: flex-start; }
+      .dl-note { font-size: 0.85rem; }
+
+      /* ---------- Features ---------- */
+      .feat-grid { display: grid; gap: 1rem; }
+      @media (min-width: 700px) { .feat-grid { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 1020px) { .feat-grid { grid-template-columns: 1fr 1fr 1fr; } }
+      .feat {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1.35rem;
+      }
+      .feat .ic {
+        width: 44px; height: 44px; border-radius: 12px;
+        display: grid; place-items: center;
+        background: var(--brand-soft); color: var(--brand);
+        margin-bottom: 0.8rem;
+      }
+      .feat h3 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+      .feat p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+      /* ---------- Demo ---------- */
+      .demo {
+        margin-top: 1rem;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        display: grid;
+        gap: 1.4rem;
+      }
+      @media (min-width: 820px) { .demo { grid-template-columns: 1fr 1fr; align-items: center; } }
+      .demo h3 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+      .demo p { margin: 0; color: var(--muted); }
+      .demo-card {
+        border: 1.5px solid var(--line);
+        border-radius: 14px;
+        padding: 1.1rem 1.2rem;
+        background: var(--surface-2);
+      }
+      .demo-card .word { font-weight: 800; }
+      .demo-card .mean { font-family: "Noto Serif Bengali", serif; font-weight: 700; line-height: 1.3; }
+      .demo-card .def { color: var(--muted); }
+      .slider-row { display: flex; align-items: center; gap: 0.9rem; margin-top: 1.1rem; }
+      .slider-row label { font-weight: 700; font-size: 0.9rem; white-space: nowrap; }
+      input[type="range"] { flex: 1; min-height: 36px; accent-color: var(--brand); }
+      .slider-val { font-weight: 800; min-width: 3.2ch; text-align: right; }
+
+      /* ---------- About / footer ---------- */
+      .about {
+        margin-top: 3.4rem;
+        background: var(--surface);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .about-inner {
+        max-width: 1120px; margin: 0 auto; padding: 2.4rem 1.25rem;
+        display: grid; gap: 1.2rem;
+      }
+      @media (min-width: 820px) { .about-inner { grid-template-columns: 1.3fr 1fr; gap: 2.5rem; } }
+      .about h2 { font-family: "Newsreader", Georgia, serif; font-weight: 800; font-size: 1.6rem; margin: 0 0 0.5rem; }
+      .about p { margin: 0; color: var(--muted); }
+      .about p + p { margin-top: 0.6rem; }
+      .contact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; align-content: start; }
+      .contact-list a { font-weight: 700; color: var(--brand); text-decoration: none; }
+      .contact-list a:hover { text-decoration: underline; }
+      .contact-list .lbl { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+      footer {
+        max-width: 1120px; margin: 0 auto; padding: 1.6rem 1.25rem 2.6rem;
+        display: flex; flex-wrap: wrap; gap: 0.8rem 1.6rem; align-items: center; justify-content: space-between;
+        color: var(--muted); font-size: 0.9rem;
+      }
+      footer nav { display: flex; flex-wrap: wrap; gap: 0.4rem 1.3rem; }
+      footer a { color: var(--muted); font-weight: 600; text-decoration: none; padding: 0.35rem 0; }
+      footer a:hover { color: var(--brand); }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .btn, .dl-card { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ================= HERO ================= -->
+    <header class="hero">
+      <div class="stripe" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div>
+          <p class="hero-word" lang="as">অৰ্থ<span class="dot">.</span></p>
+          <p class="hero-name">Artho</p>
+          <h1 class="hero-tag">Every Assamese word, one tap away.</h1>
+          <p class="hero-sub">
+            Artho is a fast English–Assamese and Assamese–English dictionary for your phone —
+            meanings, idioms and phrases, with your favourites and history kept on your device.
+            No account. No ads. Nothing collected.
+          </p>
+          <div class="hero-chips" aria-label="Good to know">
+            <span class="chip"><strong>Free</strong> to use</span>
+            <span class="chip"><strong>No ads</strong>, ever</span>
+            <span class="chip"><strong>No sign-up</strong> needed</span>
+            <span class="chip">Android · Web · JioPhone</span>
+          </div>
+          <div class="hero-cta">
+            <a class="btn btn-gold" href="#get-artho">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+              Get Artho
+            </a>
+            <a class="btn btn-ghost" href="#features">See what it does</a>
+          </div>
+        </div>
+
+        <div class="phone-wrap" aria-hidden="true">
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-head">
+                <span class="as">অৰ্থ</span>
+                <span>Dictionary</span>
+              </div>
+              <div class="phone-body">
+                <div class="mock-search">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+                  beautiful
+                </div>
+                <div class="mock-entry">
+                  <div class="w">
+                    <span class="word">beautiful</span>
+                    <span class="star">★</span>
+                  </div>
+                  <div class="pos">adjective</div>
+                  <div class="mean">ধুনীয়া</div>
+                  <div class="rom">dhuniya — pleasing to look at</div>
+                </div>
+                <div class="mock-row">
+                  <div class="mock-pill">★ Favourites</div>
+                  <div class="mock-pill gold">Idioms</div>
+                  <div class="mock-pill">History</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ================= GET ARTHO ================= -->
+      <section class="section" id="get-artho" aria-labelledby="get-h">
+        <h2 id="get-h">Get Artho</h2>
+        <p class="lede">Pick the way that fits your phone. Artho is distributed through the stores below and its main website — choose your device and follow the steps.</p>
+
+        <div class="picker" role="group" aria-label="Choose your device">
+          <button type="button" data-target="card-phonepe" aria-pressed="false">Android phone</button>
+          <button type="button" data-target="card-web" aria-pressed="false">Any browser</button>
+          <button type="button" data-target="card-jio" aria-pressed="false">JioPhone</button>
+          <button type="button" data-target="card-telegram" aria-pressed="false">Telegram</button>
+        </div>
+
+        <div class="dl-grid">
+          <!-- PhonePe Appstore -->
+          <article class="dl-card featured" id="card-phonepe">
+            <div class="dl-top">
+              <div class="dl-badge">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+              </div>
+              <div>
+                <p class="for">For Android · Recommended</p>
+                <h3>Install from PhonePe Appstore</h3>
+              </div>
+            </div>
+            <p>The Android install goes through the <strong>PhonePe Appstore</strong> (the Indus Appstore by PhonePe) — India’s own app store, made for Indian languages and phones.</p>
+            <ol class="dl-steps">
+              <li>Tap the button below — it opens <strong>Artho’s listing</strong> in the PhonePe Appstore directly.</li>
+              <li>Tap <strong>Install</strong> — done.</li>
+            </ol>
+            <a class="btn btn-gold" href="https://indusapp.store/vvadjgjb" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+              Install on PhonePe Appstore
+            </a>
+            <p class="dl-note">Don’t have the store yet? The same page lets you download the PhonePe Appstore app first.</p>
+          </article>
+
+          <!-- Main website -->
+          <article class="dl-card" id="card-web">
+            <div class="dl-top">
+              <div class="dl-badge">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/><path d="M12 3a15 15 0 0 0 0 18"/></svg>
+              </div>
+              <div>
+                <p class="for">No install needed</p>
+                <h3>Main website</h3>
+              </div>
+            </div>
+            <p>The full Artho dictionary runs on the <strong>main website</strong> — open it in any browser, on any phone or computer.</p>
+            <ol class="dl-steps">
+              <li>Tap the button below to open <strong>arthoo.vercel.app</strong>.</li>
+              <li>Want it like an app? Use your browser menu → <strong>Add to Home screen</strong>.</li>
+            </ol>
+            <a class="btn btn-green" href="https://arthoo.vercel.app" target="_blank" rel="noopener">
+              Open the main website
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+            </a>
+          </article>
+
+          <!-- JioStore -->
+          <article class="dl-card" id="card-jio">
+            <div class="dl-top">
+              <div class="dl-badge">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg>
+              </div>
+              <div>
+                <p class="for">For JioPhone · KaiOS</p>
+                <h3>JioPhone — via JioStore</h3>
+              </div>
+            </div>
+            <p>On a JioPhone, apps install from the <strong>JioStore</strong> on the phone itself — the store has no web link. Artho for KaiOS (v1.0.0) is built for these phones, and its phrases and idioms even work offline.</p>
+            <ol class="dl-steps">
+              <li>On your JioPhone, open the <strong>JioStore</strong> app and search for <strong>“Artho”</strong>.</li>
+              <li>Or open Artho’s KaiOS page below — the same v1.0.0, right in the phone’s browser.</li>
+            </ol>
+            <a class="btn btn-line" href="https://artho-kaios.vercel.app" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+              Open Artho for KaiOS
+            </a>
+          </article>
+
+          <!-- Telegram -->
+          <article class="dl-card" id="card-telegram">
+            <div class="dl-top">
+              <div class="dl-badge">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 3-9.5 9.5"/><path d="M21 3 14 21l-2.5-8.5L3 10z"/></svg>
+              </div>
+              <div>
+                <p class="for">No app at all</p>
+                <h3>Artho on Telegram</h3>
+              </div>
+            </div>
+            <p>No space for another app? Use the Artho bot on Telegram — send a word, get its meaning, right inside the chat.</p>
+            <ol class="dl-steps">
+              <li>Tap the button below to open <strong>@getartho_bot</strong>.</li>
+              <li>Press <strong>Start</strong>, then send any English or Assamese word.</li>
+            </ol>
+            <a class="btn btn-line" href="https://t.me/getartho_bot" target="_blank" rel="noopener">
+              Open @getartho_bot
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <!-- ================= FEATURES ================= -->
+      <section class="section" id="features" aria-labelledby="feat-h">
+        <h2 id="feat-h">What Artho does</h2>
+        <p class="lede">A proper dictionary, kept simple — built for students, teachers, exam aspirants and anyone who loves the Assamese language.</p>
+
+        <div class="feat-grid">
+          <div class="feat">
+            <div class="ic">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9a4 4 0 0 1 4 4v11H8a4 4 0 0 1-4-4z"/><path d="M20 5h-3"/><path d="M20 19h-3"/></svg>
+            </div>
+            <h3>Two-way dictionary</h3>
+            <p>Look up English words in Assamese, and Assamese words in English — meanings powered by the XOBDO dictionary.</p>
+          </div>
+          <div class="feat">
+            <div class="ic">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg>
+            </div>
+            <h3>Idioms &amp; phrases</h3>
+            <p>A built-in collection of Assamese idioms and phrases to explore — on KaiOS phones, they work even without internet.</p>
+          </div>
+          <div class="feat">
+            <div class="ic">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg>
+            </div>
+            <h3>Favourites</h3>
+            <p>Star the words you want to keep and find them again in one place — handy for revision and word lists.</p>
+          </div>
+          <div class="feat">
+            <div class="ic">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <h3>History, on your device</h3>
+            <p>Your recent lookups are remembered so you can pick up where you left off — stored only on your phone, never sent anywhere.</p>
+          </div>
+          <div class="feat">
+            <div class="ic">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19 10 6l2 5"/><path d="M6.5 15h5"/><path d="m14 19 4.5-10L23 19"/><path d="M15.8 16h5.4"/></svg>
+            </div>
+            <h3>Text size you control</h3>
+            <p>Make the meanings bigger or smaller until they’re comfortable to read — try the demo below, it works just like the app.</p>
+          </div>
+          <div class="feat">
+            <div class="ic">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 3 8.4 7 10 4-1.6 7-5.4 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3>Private by design</h3>
+            <p>No account, no ads, no analytics — Artho collects nothing. The only thing it sends anywhere is the word you searched, to fetch its meaning.</p>
+          </div>
+        </div>
+
+        <!-- Text-size demo -->
+        <div class="demo">
+          <div>
+            <p>One of Artho’s small comforts. Drag the slider and watch the meaning grow — in the app, your choice is remembered on your device.</p>
+            <div class="slider-row">
+              <label for="sizeRange">Text size</label>
+              <input type="range" id="sizeRange" min="100" max="175" step="5" value="115" aria-describedby="sizeVal" />
+              <span class="slider-val" id="sizeVal">115%</span>
+            </div>
+          </div>
+          <div class="demo-card" aria-live="polite">
+            <div class="word" id="demoWord">artho</div>
+            <div class="mean as" id="demoMean">অৰ্থ</div>
+            <div class="def" id="demoDef">noun — meaning; the sense of a word.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ABOUT ================= -->
+      <div class="about">
+        <div class="about-inner">
+          <div>
+            <h2>About Artho</h2>
+            <p>
+              Artho (<span class="as" lang="as">অৰ্থ</span> — “meaning”) is an Assamese dictionary made in Assam by
+              <strong>Saurabh Saha</strong>. It started as a simple idea: the meaning of any word, in the language
+              of home, should be one tap away — for a student in a classroom, a teacher preparing a lesson,
+              or anyone reading Assamese after years away from it.
+            </p>
+            <p>
+              The same dictionary now lives everywhere its readers are: on Android through the PhonePe Appstore,
+              on the web, on JioPhone in its KaiOS version, and inside Telegram as @getartho_bot.
+            </p>
+          </div>
+          <ul class="contact-list">
+            <li>
+              <span class="lbl">Main website</span>
+              <a href="https://arthoo.vercel.app" target="_blank" rel="noopener">arthoo.vercel.app</a>
+            </li>
+            <li>
+              <span class="lbl">Telegram bot</span>
+              <a href="https://t.me/getartho_bot" target="_blank" rel="noopener">@getartho_bot</a>
+            </li>
+            <li>
+              <span class="lbl">Support</span>
+              <a href="mailto:support.saurabh@erine.email">support.saurabh@erine.email</a>
+            </li>
+            <li>
+              <span class="lbl">Made by</span>
+              Saurabh Saha · Assam · by ANEK
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <span>Artho · <span class="as" lang="as">অৰ্থ অভিধান</span> — English–Assamese dictionary</span>
+      <nav aria-label="Artho links">
+        <a href="https://indusapp.store/vvadjgjb" target="_blank" rel="noopener">PhonePe Appstore</a>
+        <a href="https://arthoo.vercel.app" target="_blank" rel="noopener">Main website</a>
+        <a href="https://artho-kaios.vercel.app" target="_blank" rel="noopener">KaiOS / JioStore</a>
+        <a href="https://t.me/getartho_bot" target="_blank" rel="noopener">Telegram bot</a>
+      </nav>
+    </footer>
+
+    <script>
+      (function () {
+        // Device picker: highlight the matching download card and scroll to it.
+        var buttons = document.querySelectorAll(".picker button");
+        buttons.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            buttons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+            btn.setAttribute("aria-pressed", "true");
+            document.querySelectorAll(".dl-card").forEach(function (c) { c.classList.remove("highlight"); });
+            var card = document.getElementById(btn.getAttribute("data-target"));
+            if (card) {
+              card.classList.add("highlight");
+              card.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          });
+        });
+
+        // Text-size demo: scale the sample entry like the app does.
+        var range = document.getElementById("sizeRange");
+        var val = document.getElementById("sizeVal");
+        var mean = document.getElementById("demoMean");
+        var def = document.getElementById("demoDef");
+        var word = document.getElementById("demoWord");
+        function applySize() {
+          var pct = parseInt(range.value, 10);
+          val.textContent = pct + "%";
+          var f = pct / 100;
+          mean.style.fontSize = 1.55 * f + "rem";
+          def.style.fontSize = 0.98 * f + "rem";
+          word.style.fontSize = 1.05 * f + "rem";
+        }
+        range.addEventListener("input", applySize);
+        applySize();
+      })();
+    </script>
+  </body>
+</html>
